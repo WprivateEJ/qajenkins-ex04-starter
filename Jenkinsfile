@@ -4,11 +4,13 @@ pipeline {
     registry = "ex04"
     dockerImage = ""
   }
-  stages {
-    stage("Docker Build") {
-      steps {
-        sh "echo 'Docker Build...'"
-      }
+    stage ('Docker Build'){
+        steps{
+            script {
+                dockerImage = docker.build(registry)
+                dockerImage.tag("${env.BUILD_NUMBER}")
+            }
+        }
     }
     stage("Scan Image") {
       steps {
